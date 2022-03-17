@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regiones</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h3 class="mt-4 p-4 text-center">Regiones de Chile</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Región</th>
+          <th scope="col">Comunas</th>
+        </tr>
+      </thead>
+      <tbody id="regiones">
+      </tbody>
+    </table>
+  </div>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="axios.min.js"></script>
+  <script>
+    // Función que, al cargar el template, llama a la API de Citas
+    async function init () {
+      // 1. Pido las citas a la API
+      const { data } = await axios.get('/api/regiones', {
+        headers: {
+          pass: '12345'
+        }
+      })
+
+      let regiones_html = ''
+      for (let i=0; i<data.length; i++) {
+
+        const region = data[i]
+        regiones_html += `
+          <tr>
+            <td scope="row">${i + 1}</td>
+            <td>${region.region}</td>
+            <td>${region.comunas.join(' - ')}</td>
+          </tr>
+        `
+      }
+      document.getElementById('regiones').innerHTML = regiones_html
+      
+      // console.log(data)
+    }
+    init()
+  </script>
+</body>
+</html>

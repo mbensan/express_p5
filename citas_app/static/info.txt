@@ -1,0 +1,27 @@
+
+
+Chrome (Cliente) => static => Auth => i18n => Rutas GET POST PUT DELETE
+
+Rutas de Clonegram:
+
+GET /registro
+POST /registro
+GET /login
+POST /login
+
+GET /feed
+GET /img/:id
+POST /img
+
+GET /img/:id/comments
+POST /img/:id/comments
+
+GET /histories
+GET /histories/:id
+POST /histories
+
+POST /img/:id/likes
+POST /feed
+
+
+
