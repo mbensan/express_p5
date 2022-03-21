@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+  <h3 class="text-center">Buscar un pokemon</h3>
+  <div class="row">
+    <form id="buscar-pokemon" class="col-4 offset-4">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" >
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById('buscar-pokemon').addEventListener('submit', function(ev) {
+    ev.preventDefault()
+    alert('Formulario en construcción')
+  })
+</script>
+{% endblock %}

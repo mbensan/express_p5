@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<style>
+  h1.text-center {
+    color: darkcyan;
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+  <h1 class="text-center">Detalles de {{ pokemon.name }}</h1>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>
+              <strong>Peso:</strong>
+            </td>
+            <td>
+              {{ pokemon.weight }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Estatura:</strong>
+            </td>
+            <td>
+              {{ pokemon.height }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Habilidades:</strong>
+            </td>
+            <td>
+              <ul>
+                {% for ability in pokemon.abilities %}
+                  <li>{{ ability.ability.name }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

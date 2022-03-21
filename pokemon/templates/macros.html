@@ -1,0 +1,9 @@
+{% macro poke_card(pokemon) %}
+  <div class="card">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.id }}.png" class="card-img-top" alt="Imagen de {{ pokemon.name }}">
+    <div class="card-body">
+      <h5 class="card-title">{{ pokemon.name }}</h5>
+      <a href="/pokemon/{{ pokemon.id }}" class="btn btn-primary">Ver detalle</a>
+    </div>
+  </div>
+{% endmacro %}

@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% from 'macros.html' import poke_card %}
+
+{% block main %}
+  <h1 class="text-center">Lista de POKEMONES</h1>
+  <div class="row">
+    {% for pokemon in pokemones %}
+      <div class="col-3">
+        {{ poke_card(pokemon) }}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
