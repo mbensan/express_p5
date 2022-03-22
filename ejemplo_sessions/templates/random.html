@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<style>
+  .palabra {
+    padding: 3rem;
+    border: 2px solid black;
+    border-radius: 1rem;
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="row">
+  <div class="col-4 offset-4 text-center">
+    <h5>Usted lleva {{ intentos }} intentos</h5>
+    <div class="palabra mb-4">
+      {{palabra}}
+    </div>
+    <a href="/random" class="btn btn-primary">Jugar!</a>
+    <a href="/random/reset" class="btn btn-danger">Reiniciar</a>
+  </div>
+</div>
+{% endblock %}

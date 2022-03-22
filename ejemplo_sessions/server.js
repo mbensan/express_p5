@@ -1,5 +1,6 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
+const crypto = require('crypto')
 const session = require('express-session')
 
 const app = express()
@@ -38,6 +39,22 @@ app.get('/frutas/add/:fruta', (req, res) => {
 
   res.redirect('/frutas')
 })
+
+app.get('/random', (req, res) => {
+
+  if (!req.session.intentos) {
+    req.session.intentos = 0
+  }
+  req.session.intentos += 1
+  const palabra = crypto.randomBytes(7).toString('hex')
+
+  res.render('random.html', {palabra, intentos: req.session.intentos})
+});
+
+app.get('/random/reset', (req, res) => {
+  req.session.intentos = 0
+  res.redirect('/random')
+});
 
 
 const PORT = 3000
