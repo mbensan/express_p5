@@ -1,4 +1,5 @@
 const express = require('express')
+const { get_user, create_user } = require('./db.js')
 
 const router = express.Router()
 
@@ -58,7 +59,34 @@ router.post('/login', (req, res) => {
 })
 
 router.get('/register', (req, res) => {
-  res.render('register.html')
+  const errors = req.flash('errors')
+  res.render('register.html', { errors })
+})
+
+router.post('/register', async (req, res) => {
+  // 1. Recuperar los campos del formulario
+  const name = req.body.name
+  const email = req.body.email
+  const password = req.body.password
+  const password_confirm = req.body.password_confirm
+
+  // 2. Validar que ambas contraseñas sean iguales
+  if (password != password_confirm) {
+    req.flash('errors', 'Las contraseñas no coinciden')
+    return res.redirect('/register')
+  }
+  
+  // 3. Validar que no exista otro usuario con el mismo correo
+  const user = await get_user(email)
+  if (user) {
+    req.flash('errors', 'Este email ya se encuentra registrado')
+    return res.redirect('/register')
+  }
+
+  // 4. Finalmente podemos guardar el nuevo usuario
+  await create_user(name, email, password)
+
+  res.redirect('/')
 })
 
 module.exports = router
