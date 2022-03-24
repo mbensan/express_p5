@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% from 'macros.html' import navbar %}
+
+{% block main %}
+  
+  {{ navbar('/seguidos') }}
+
+  <h2 class="text-center">Cuentas a las que {{ user.name }} está siguiendo</h2>
+
+{% endblock %}
