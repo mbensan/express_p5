@@ -3,56 +3,36 @@ const { get_user, create_user } = require('./db.js')
 
 const router = express.Router()
 
-const users = [
-  {
-    name: 'Hugo Muñoz',
-    password: '12345',
-    email: 'hugo@gmail.com'
-  },
-  {
-    name: 'Paula Inzunza',
-    password: '54321',
-    email: 'paula@gmail.com'
-  },
-  {
-    name: 'Carlos Horta',
-    password: '98765',
-    email: 'carlos@gmail.com'
-  }
-] 
-
 // RUTAS
 router.get('/', (req, res) => {
-  res.render('index.html')
+  const user = req.session.user
+  res.render('index.html', { user })
 })
 
 router.get('/login', (req, res) => {
-  res.render('login.html')
+  const errors = req.flash('errors')
+  res.render('login.html', { errors })
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   // 0. Recuperamos los campos del formulario
   const email = req.body.email
   const password = req.body.password
 
   // 1. Revisamos si efectivamente existe el usuario
-  /* versión con for ... of ...
-    let user_encontrado;
-    for (let user of users) {
-      if (email == user.email) {
-        user_encontrado = user
-        break
-      }
-    }
-  */
-  const user_encontrado = users.find( function(us) { return us.email == email } )
+  const user_encontrado = await get_user(email)
   if (!user_encontrado) {
-    return res.send('Usuario inexistente o contraseña incorrecta')
+    req.flash('errors', 'Usuario inexistente o contraseña incorrecta')
+    return res.redirect('/login')
   }
   //  2. Revisamos que las contraseñas coincidan
   if (user_encontrado.password != password) {
-    return res.send('Usuario inexistente o contraseña incorrecta')
+    req.flash('errors', 'Usuario inexistente o contraseña incorrecta')
+    return res.redirect('/login')
   }
+
+  // 4. Guardamos al usuario en sesion
+  req.session.user = user_encontrado
 
   // 3. Redirigir al usuario al Home
   res.redirect('/')
@@ -83,10 +63,21 @@ router.post('/register', async (req, res) => {
     return res.redirect('/register')
   }
 
-  // 4. Finalmente podemos guardar el nuevo usuario
+  // 4. Finalmente podemos guardar el nuevo usuario en base de datos
   await create_user(name, email, password)
 
+  // 5. y en la sesión
+  req.session.user = {
+    name, email, password
+  }
+  console.log('session', req.session);
+
   res.redirect('/')
+})
+
+router.get('/logout', (req, res) => {
+  req.session.user = null
+  res.redirect('/login')
 })
 
 module.exports = router
