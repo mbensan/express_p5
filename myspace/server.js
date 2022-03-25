@@ -2,6 +2,8 @@ const express = require('express')
 const nunjucks = require('nunjucks')
 const session = require('express-session')
 const flash = require('connect-flash')
+const fileUpload = require('express-fileupload')
+
 
 const app = express()
 
@@ -13,6 +15,13 @@ nunjucks.configure("templates", {
   autoscape: true,
   watch: true,
 });
+
+// configuramos la subida de archivos
+app.use(fileUpload({
+  limits: { fileSize: 5242880 },
+  abortOnLimit: true,
+  responseOnLimit: 'El peso del archivo supera el máximo (5Mb)'
+}))
 
 
 app.use(express.json())
