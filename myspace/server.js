@@ -25,7 +25,8 @@ app.use(session({
 app.use(flash())
 
 // RUTAS
-app.use(require('./routes.js'))
+app.use(require('./routes/auth.js'))
+app.use(require('./routes/routes.js'))
 
 const PORT = 3000
 app.listen(PORT, () => console.log(`Servidor escuchando en el puerto ${PORT}`))

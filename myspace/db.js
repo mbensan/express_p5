@@ -11,28 +11,6 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000
 })
 
-
-async function add_candidato(nombre, foto, color) {
-  const client = await pool.connect()
-
-  await client.query({
-    text: 'insert into candidatos (nombre, foto, color) values ($1, $2, $3)',
-    values: [nombre, foto, color]
-  })
-
-  client.release()
-}
-
-async function get_candidatos() {
-  const client = await pool.connect()
-
-  const { rows } = await client.query('select * from candidatos')
-
-  client.release()
-
-  return rows
-}
-
 async function get_user(email) {
   const client = await pool.connect()
 
@@ -57,8 +35,6 @@ async function create_user(name, email, password) {
   client.release()
 
 }
-
-
 
 module.exports = {
   get_user, create_user
