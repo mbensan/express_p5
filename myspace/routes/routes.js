@@ -11,13 +11,11 @@ function protected_route (req, res, next) {
 
 // RUTAS
 router.get('/', protected_route, (req, res) => {
-  const user = req.session.user
-  res.render('index.html', { user })
+  res.render('index.html')
 })
 
 router.get('/seguidos', protected_route, (req, res) => {
-  const user = req.session.user
-  res.render('seguidos.html', { user })
+  res.render('seguidos.html')
 })
 
 module.exports = router

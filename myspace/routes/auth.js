@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
 const { get_user, create_user } = require('../db.js')
 
 const router = express.Router()
@@ -20,7 +21,8 @@ router.post('/login', async (req, res) => {
     return res.redirect('/login')
   }
   //  2. Revisamos que las contraseñas coincidan
-  if (user_encontrado.password != password) {
+  const son_iguales = await bcrypt.compare(password, user_encontrado.password)
+  if (!son_iguales) {
     req.flash('errors', 'Usuario inexistente o contraseña incorrecta')
     return res.redirect('/login')
   }
@@ -58,7 +60,8 @@ router.post('/register', async (req, res) => {
   }
 
   // 4. Finalmente podemos guardar el nuevo usuario en base de datos
-  await create_user(name, email, password)
+  const password_encrypt = await bcrypt.hash(password, 10)
+  await create_user(name, email, password_encrypt)
 
   // 5. y en la sesión
   req.session.user = {

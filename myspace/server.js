@@ -14,8 +14,10 @@ nunjucks.configure("templates", {
   watch: true,
 });
 
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
 
 app.use(session({
   secret: 'mi-clave',
@@ -23,6 +25,12 @@ app.use(session({
 }))
 
 app.use(flash())
+
+// para dejar el user como variable global de los templates
+app.use(function (req, res, next) {
+  res.locals.user = req.session.user
+  next()
+})
 
 // RUTAS
 app.use(require('./routes/auth.js'))
